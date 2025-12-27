@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { urlConfig } from '../../config';
+import {urlConfig} from '../../config';
 
 function SearchPage() {
     const [searchQuery, setSearchQuery] = useState('');
@@ -9,6 +9,7 @@ function SearchPage() {
     const [searchResults, setSearchResults] = useState([]);
     const categories = ['Living', 'Bedroom', 'Bathroom', 'Kitchen', 'Office'];
     const conditions = ['New', 'Like New', 'Older'];
+    const API_URL = process.env.REACT_APP_BACKEND_URL;
 
     useEffect(() => {
         // fetch all products
