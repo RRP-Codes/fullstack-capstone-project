@@ -22,14 +22,18 @@ router.post('/register', async (req, res) => {
         // Task 2: Access MongoDB collection
         const collection = db.collection("users");
 
-        //Task 3: Check for existing email
+        // Task 3: Check for existing email
         const existingEmail = await collection.findOne({ email: req.body.email });
+        if (existingEmail) {
+            logger.error('Email already exists');
+            return res.status(400).json({ error: 'Email already registered' });
+        }
 
         const salt = await bcryptjs.genSalt(10);
         const hash = await bcryptjs.hash(req.body.password, salt);
         const email = req.body.email;
 
-        //Task 4: Save user details in database
+        //Task 4: Save u details in database
         const newUser = await collection.insertOne({
             email: req.body.email,
             firstName: req.body.firstName,
@@ -46,9 +50,9 @@ router.post('/register', async (req, res) => {
 
         const authtoken = jwt.sign(payload, JWT_SECRET);
         logger.info('User registered successfully');
-        res.json({authtoken,email});
+        res.json({ authtoken, email });
     } catch (e) {
-         return res.status(500).send('Internal server error');
+        return res.status(500).send('Internal server error');
     }
 });
 
